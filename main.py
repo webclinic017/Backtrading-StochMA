@@ -1,6 +1,6 @@
 # Тестер стратегий на исторических данных
 import csv
-
+import history
 import backtrader as bt
 # import asyncio
 import yfinance as yf
@@ -332,31 +332,6 @@ def convert_data(raw_data):
     return df
 
 
-def get_history_binance(ticker, interval):
-    config = configparser.ConfigParser()
-    config.read('api.ini')
-    client = bn.Client(
-        testnet=False, api_key=config['BINANCE']['apikey'],
-        api_secret=config['BINANCE']['apisecret'], )
-    raw_data = client.get_historical_klines(symbol=ticker, interval=interval)
-    df = convert_data(raw_data)
-    return df
-
-
-def read_binance_history(ticker, tf, t):
-    path = './binance/'+ tf + '-' + t + '/' + ticker + '.csv'
-    with open(path, 'r') as f:
-        raw_data = csv.reader(f)
-        raw_data = list(raw_data)
-    return raw_data
-
-
-def get_history_yf(ticker, tf):
-    tick = yf.Ticker(ticker=ticker)
-    history = tick.history(interval=tf)
-    return history
-
-
 def start_test(data, matype='SMA', period=30):
     cerebro = bt.Cerebro()
     cerebro.adddata(data)
@@ -390,7 +365,7 @@ def start_test(data, matype='SMA', period=30):
 def main():
     ma_types = ['SMA', 'EMA', 'DEMA', 'KAMA', 'TEMA', 'WMA']
 
-    df = read_binance_history('BTCUSDT', '1h', 'futures')
+    df = history.read_binance_history('BTCUSDT', '1h', 'futures')
     data = convert_data(df)
 
     #data = get_history_binance('BTCUSDT', '1h')
