@@ -1,18 +1,7 @@
-# Тестер стратегий на исторических данных
-import csv
-import history
-import backtrader as bt
-# import asyncio
-import yfinance as yf
-import configparser
-import binance as bn
-import pandas as pd
 import datetime
-import pandas_ta as ta
-import talib
-from talib import abstract
-# import matplotlib
-# import datetime
+import backtrader as bt
+import pandas as pd
+import history
 
 
 class TestStrategy(bt.Strategy):
@@ -365,10 +354,10 @@ def start_test(data, matype='SMA', period=30):
 def main():
     ma_types = ['SMA', 'EMA', 'DEMA', 'KAMA', 'TEMA', 'WMA']
 
-    df = history.read_binance_history('BTCUSDT', '1h', 'futures')
+    df = history.read_csv('BTCUSDT', '1h', 'futures', 'binance',)
     data = convert_data(df)
 
-    #data = get_history_binance('BTCUSDT', '1h')
+    # data = history.get_history_binance('BTCUSDT', '1h')
 
     result = start_test(data=data, matype='SMA', period=4,)
 
